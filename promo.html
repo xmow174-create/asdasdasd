@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>안양 하루 여행 — 15초 홍보 영상</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--accent:#e2552b;--gold:#f0b93a;--cream:#f6f1e7;--dark:#120f0c}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#000;overflow:hidden}
+body{display:grid;place-items:center;font-family:"Black Han Sans","Noto Sans KR",sans-serif;color:var(--cream)}
+
+/* 16:9 무대 — 화면 크기에 맞춰 자동으로 커지고 작아짐 */
+#stage{position:relative;width:min(100vw,177.78vh);height:min(56.25vw,100vh);background:var(--dark);overflow:hidden;font-size:1px}
+#stage::before{content:"";position:absolute;inset:-20%;background:radial-gradient(circle at 50% 50%,rgba(226,85,43,.28),transparent 55%);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.15);opacity:.6}}
+
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;opacity:0;pointer-events:none}
+.scene.on{opacity:1}
+.big{font-size:15em;line-height:1;letter-spacing:-.01em}
+.mid{font-size:7em;line-height:1.1}
+.small{font-size:3.6em;font-family:"Noto Sans KR",sans-serif;font-weight:900;letter-spacing:.02em}
+.accent{color:var(--accent)}
+.gold{color:var(--gold)}
+
+/* 흰색 번쩍 */
+#flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:5}
+#flash.go{animation:flash .35s ease-out}
+@keyframes flash{0%{opacity:.85}100%{opacity:0}}
+
+/* 1) 제목 쾅 */
+.slam{animation:slam .55s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes slam{0%{transform:scale(3.2);opacity:0;filter:blur(20px)}60%{opacity:1;filter:blur(0)}100%{transform:scale(1)}}
+.shake{animation:shake .4s .5s both}
+@keyframes shake{0%,100%{transform:translate(0,0)}20%{transform:translate(-1.2%,1%)}40%{transform:translate(1.2%,-1%)}60%{transform:translate(-.8%,.6%)}80%{transform:translate(.6%,-.4%)}}
+
+/* 2) 장소 전환 효과 3가지 */
+.zoom{animation:zoom .5s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes zoom{0%{transform:scale(.2);opacity:0}100%{transform:scale(1);opacity:1}}
+.slide{animation:slide .45s cubic-bezier(.2,1.2,.4,1) both}
+@keyframes slide{0%{transform:translateX(120%) skewX(-18deg);opacity:0}100%{transform:none;opacity:1}}
+.jolt{animation:jolt .5s both}
+@keyframes jolt{0%{transform:scale(1.6) rotate(-6deg);opacity:0}40%{transform:scale(.95) rotate(2deg);opacity:1}60%{transform:rotate(-2deg) translateX(-1%)}80%{transform:rotate(1deg) translateX(1%)}100%{transform:none}}
+.label{font-size:3.4em;font-family:"Noto Sans KR",sans-serif;font-weight:900;color:var(--gold);margin-bottom:.4em;letter-spacing:.1em}
+.label-anim{animation:fadeup .4s .1s both}
+@keyframes fadeup{0%{transform:translateY(40%);opacity:0}100%{transform:none;opacity:1}}
+.bar{position:absolute;left:0;bottom:0;height:1.6em;background:var(--accent);width:0}
+.bar.run{animation:bar 1.5s linear both}
+@keyframes bar{to{width:100%}}
+
+/* 3) 숫자 카운트업 */
+.counts{display:flex;gap:9em;align-items:flex-end}
+.count .lbl{font-size:3.6em;font-family:"Noto Sans KR",sans-serif;font-weight:900;color:#cfc6b8;margin-bottom:.2em}
+.count .num{font-size:13em;line-height:1;color:var(--gold);font-variant-numeric:tabular-nums}
+.count .unit{font-size:5em;color:var(--cream);margin-left:.1em}
+.tiny{position:absolute;bottom:4.5em;font-size:2.6em;font-family:"Noto Sans KR",sans-serif;font-weight:700;color:#8f8679}
+
+/* 4) 마무리 */
+.final .big{font-size:12em;animation:slam .6s cubic-bezier(.2,1.6,.4,1) both}
+.url{margin-top:1.4em;font-size:3.6em;font-family:"Noto Sans KR",sans-serif;font-weight:900;color:var(--dark);background:var(--cream);padding:.35em .9em;border-radius:.4em;animation:fadeup .5s .6s both}
+
+/* 다시보기 버튼 */
+#replay{position:fixed;right:24px;bottom:24px;z-index:20;font:700 17px "Noto Sans KR",sans-serif;color:#fff;background:var(--accent);border:none;border-radius:14px;padding:12px 20px;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.4);opacity:.9}
+#replay:hover{opacity:1}
+body.recording #replay{opacity:0}
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <div id="flash"></div>
+
+  <!-- 0~2초: 제목 -->
+  <div class="scene" id="s-title">
+    <div class="shake"><div class="big slam">안양<br><span class="accent">하루 여행</span></div></div>
+  </div>
+
+  <!-- 2~8초: 추천 장소 -->
+  <div class="scene" id="s-place">
+    <div class="label" id="p-label">추천 01</div>
+    <div class="big" id="p-name">안양예술공원</div>
+    <div class="bar" id="p-bar"></div>
+  </div>
+
+  <!-- 8~12초: 숫자 카운트업 -->
+  <div class="scene" id="s-count">
+    <div class="counts">
+      <div class="count"><div class="lbl">예상 비용</div><span class="num" id="c-money">0</span><span class="unit">원</span></div>
+      <div class="count"><div class="lbl">소요 시간</div><span class="num" id="c-hour">0</span><span class="unit">시간</span></div>
+    </div>
+    <div class="tiny">※ 1인 기준 예시 금액</div>
+  </div>
+
+  <!-- 12~15초: 마무리 -->
+  <div class="scene final" id="s-final">
+    <div class="big">지금 <span class="accent">떠나세요</span></div>
+    <div class="url">xmow174-create.github.io/asdasdasd</div>
+  </div>
+</div>
+
+<button id="replay" type="button">↻ 다시보기</button>
+
+<script>
+// 장소 이름과 숫자는 tour.html 내용 그대로
+const PLACES = [
+  {name:"안양예술공원", fx:"zoom"},
+  {name:"안양1번가",   fx:"slide"},
+  {name:"평촌1번가",   fx:"jolt"}
+];
+const MONEY = 39000;  // tour.html 예상 비용 합계(예시)
+const HOURS = 8;      // tour.html 일정 10:00~18:00
+
+const stage = document.getElementById("stage");
+const $ = id => document.getElementById(id);
+let timers = [], rafs = [];
+
+// 무대 크기에 맞춰 글자 크기 단위 조정 (1em = 무대 너비의 1%)
+function fit(){ stage.style.fontSize = (stage.clientWidth/100) + "px"; }
+window.addEventListener("resize", fit); fit();
+
+function at(sec, fn){ timers.push(setTimeout(fn, sec*1000)); }
+function show(id){
+  document.querySelectorAll(".scene").forEach(s => s.classList.remove("on"));
+  const el = $(id); el.classList.add("on");
+  restartAnims(el);
+}
+function restartAnims(el){
+  el.querySelectorAll("*").forEach(n => { const a = n.style.animation; n.style.animation = "none"; void n.offsetWidth; n.style.animation = a; });
+}
+function flash(){ const f = $("flash"); f.classList.remove("go"); void f.offsetWidth; f.classList.add("go"); }
+function retrigger(el, cls){ el.className = el.className.replace(/\b(zoom|slide|jolt|label-anim|run)\b/g,"").trim(); void el.offsetWidth; el.classList.add(cls); }
+
+function countUp(el, to, dur, comma){
+  const start = performance.now();
+  function step(now){
+    const t = Math.min(1, (now-start)/dur);
+    const v = Math.round(to * (1 - Math.pow(1-t, 3)));
+    el.textContent = comma ? v.toLocaleString("ko-KR") : v;
+    if (t < 1) rafs.push(requestAnimationFrame(step));
+  }
+  rafs.push(requestAnimationFrame(step));
+}
+
+function play(){
+  timers.forEach(clearTimeout); rafs.forEach(cancelAnimationFrame);
+  timers = []; rafs = [];
+  $("c-money").textContent = "0"; $("c-hour").textContent = "0";
+
+  // 0초: 제목 쾅
+  at(0, () => { show("s-title"); flash(); });
+
+  // 2초~6.5초: 장소 3곳, 1.5초씩
+  PLACES.forEach((p, i) => {
+    at(2 + i*1.5, () => {
+      if (i === 0) show("s-place");
+      $("p-label").textContent = "추천 0" + (i+1);
+      $("p-name").textContent = p.name;
+      retrigger($("p-name"), p.fx);
+      retrigger($("p-label"), "label-anim");
+      retrigger($("p-bar"), "run");
+      flash();
+    });
+  });
+  // 6.5초~8초: 세 곳을 한 번에
+  at(6.5, () => {
+    $("p-label").textContent = "하루에 3곳";
+    $("p-name").innerHTML = '<span style="font-size:.3em">예술공원 · 안양1번가 · 평촌1번가</span>';
+    retrigger($("p-name"), "zoom");
+    retrigger($("p-label"), "label-anim");
+    retrigger($("p-bar"), "run");
+  });
+
+  // 8초~12초: 카운트업
+  at(8, () => {
+    show("s-count"); flash();
+    countUp($("c-money"), MONEY, 2600, true);
+    countUp($("c-hour"), HOURS, 2600, false);
+  });
+
+  // 12초~15초: 마무리 (끝나도 화면에 그대로 남음)
+  at(12, () => { show("s-final"); flash(); });
+}
+
+$("replay").addEventListener("click", play);
+// 녹화할 때 버튼을 숨기고 싶으면 키보드 H
+document.addEventListener("keydown", e => { if (e.key === "h" || e.key === "H") document.body.classList.toggle("recording"); });
+
+// 폰트가 준비되면 자동 재생 (최대 1.5초 대기)
+Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 1500))]).then(() => { fit(); play(); });
+</script>
+</body>
+</html>
