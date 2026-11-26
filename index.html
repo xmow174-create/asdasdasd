@@ -209,7 +209,7 @@
   .plan .ps{font-size:12px;color:var(--muted)}
   .plan .save{position:absolute;top:-10px;right:10px;background:var(--green);color:#fff;font-size:11px;font-weight:700;border-radius:999px;padding:3px 8px}
   .fine{font-size:12px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.6}
-  .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;z-index:20;white-space:nowrap}
+  .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;z-index:20;white-space:nowrap}
   .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
   input[type=file]{display:none}
   .disclaimer{color:var(--muted);font-size:12px;text-align:center;line-height:1.6;margin-top:16px}
@@ -511,6 +511,25 @@
   .wl-box h2{font-size:clamp(26px,3.4vw,34px);margin:6px 0}
   .wl-box p{color:#dcefe5}
   .wl-box .btn{background:#fff;color:var(--green-ink);text-decoration:none}
+  /* 바로가기 도구 막대 */
+  .quickbar{position:fixed;z-index:9;display:flex;gap:4px;background:rgba(255,253,248,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);box-shadow:0 14px 34px -16px rgba(31,27,22,.45)}
+  .qb-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:none;font:inherit;font-size:11.5px;font-weight:600;color:var(--ink);text-decoration:none;cursor:pointer;border-radius:12px;line-height:1.2;text-align:center}
+  .qb-item .qi{font-size:20px;line-height:1}
+  .qb-item:hover{background:var(--bg)}
+  .qb-item.walk{color:var(--green-ink)}
+  .qb-item.walk .qi{background:var(--green-soft);border-radius:10px;padding:5px}
+  .qb-item.on{background:var(--dark);color:#fff}
+  @media (min-width:1400px){
+    .quickbar{right:14px;top:50%;transform:translateY(-50%);flex-direction:column;border-radius:20px;padding:8px}
+    .qb-item{width:60px;padding:9px 2px}
+    .qb-sep{height:1px;background:var(--line);margin:2px 6px}
+  }
+  @media (max-width:1399px){
+    .quickbar{top:auto;left:0;right:0;bottom:0;transform:none;border-radius:18px 18px 0 0;border-bottom:none;padding:6px 6px calc(6px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(var(--qb-n,5),1fr)}
+    .qb-item{padding:6px 0}
+    .qb-sep,.qb-desk{display:none}
+    body{padding-bottom:72px}
+  }
   /* 광고 배너 */
   .ad-sec{padding:8px 0 0}
   .ad-wrap{position:relative;border-radius:24px;overflow:hidden;min-height:190px;box-shadow:0 20px 40px -26px rgba(31,27,22,.5)}
@@ -930,7 +949,15 @@
     </div>
   </div>
 </div>
-<button class="help-fab" data-help="faq" aria-label="고객센터 열기">💬<span>고객센터</span></button>
+<nav class="quickbar" aria-label="바로가기" style="--qb-n:5">
+  <button class="qb-item" data-go="try"><span class="qi">🔍</span>써 보기</button>
+  <a class="qb-item walk" href="tour.html"><span class="qi">🚶</span>산책로</a>
+  <button class="qb-item" data-go="pricing"><span class="qi">👑</span>요금제</button>
+  <button class="qb-item qb-desk" data-go="pdfCard"><span class="qi">📘</span>4주 플랜</button>
+  <button class="qb-item" data-help="faq"><span class="qi">💬</span>고객센터</button>
+  <div class="qb-sep"></div>
+  <button class="qb-item" id="qbTop" aria-label="맨 위로"><span class="qi">⬆</span>맨 위</button>
+</nav>
 <div class="modal" id="help">
   <div class="sheet">
     <button class="x" data-close="help" aria-label="닫기">✕</button>
@@ -1570,7 +1597,7 @@ $("bpCodeBtn").addEventListener("click", () => {
 });
 $("bpCode").addEventListener("keydown", e => { if (e.key === "Enter") $("bpCodeBtn").click(); });
 // 운영자 도구: 주소 끝에 #admin 을 붙여 열기 (예: https://내사이트.github.io/eatburn/#admin)
-function checkAdmin(){ if (location.hash === "#admin"){ $("adminPay").classList.add("on"); renderLedger(); } }
+function checkAdmin(){ if (location.hash === "#admin"){ $("adminPay").classList.add("on"); renderLedger(); } else if (location.hash === "#help"){ openHelp("faq"); } else if (location.hash === "#ask"){ openHelp("ask"); } }
 window.addEventListener("hashchange", checkAdmin);
 let adNo = "";
 $("adTabs").addEventListener("click", e => {
@@ -2443,6 +2470,7 @@ function refreshAll(){
 }
 refreshAll();
 checkAdmin();
+$("qbTop").addEventListener("click", () => window.scrollTo({top:0, behavior:"smooth"}));
 
 /* ================= 사이트 ================= */
 document.addEventListener("click", e => {

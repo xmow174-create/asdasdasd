@@ -99,6 +99,25 @@ button{font:inherit;color:inherit}
 
 footer{background:var(--dark);color:#a89e90;font-size:13px;padding:28px 20px;text-align:center;line-height:1.7}
 
+/* 바로가기 도구 막대 */
+  .quickbar{position:fixed;z-index:9;display:flex;gap:4px;background:rgba(255,253,248,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);box-shadow:0 14px 34px -16px rgba(31,27,22,.45)}
+  .qb-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:none;font:inherit;font-size:11.5px;font-weight:600;color:var(--ink);text-decoration:none;cursor:pointer;border-radius:12px;line-height:1.2;text-align:center}
+  .qb-item .qi{font-size:20px;line-height:1}
+  .qb-item:hover{background:var(--bg)}
+  .qb-item.walk{color:var(--green-ink)}
+  .qb-item.walk .qi{background:var(--green-soft);border-radius:10px;padding:5px}
+  .qb-item.on{background:var(--dark);color:#fff}
+  @media (min-width:1400px){
+    .quickbar{right:14px;top:50%;transform:translateY(-50%);flex-direction:column;border-radius:20px;padding:8px}
+    .qb-item{width:60px;padding:9px 2px}
+    .qb-sep{height:1px;background:var(--line);margin:2px 6px}
+  }
+  @media (max-width:1399px){
+    .quickbar{top:auto;left:0;right:0;bottom:0;transform:none;border-radius:18px 18px 0 0;border-bottom:none;padding:6px 6px calc(6px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(var(--qb-n,5),1fr)}
+    .qb-item{padding:6px 0}
+    .qb-sep,.qb-desk{display:none}
+    body{padding-bottom:72px}
+  }
 @media (max-width:900px){
   .layout{grid-template-columns:1fr}
   .side{position:static;max-height:none}
@@ -158,6 +177,15 @@ footer{background:var(--dark);color:#a89e90;font-size:13px;padding:28px 20px;tex
     </div>
   </section>
 </main>
+
+<nav class="quickbar" aria-label="바로가기" style="--qb-n:5">
+  <a class="qb-item" href="index.html"><span class="qi">🏠</span>홈</a>
+  <a class="qb-item" href="index.html#try"><span class="qi">🔍</span>칼로리</a>
+  <button class="qb-item walk" id="qbRegion"><span class="qi">🗺️</span>지역 선택</button>
+  <a class="qb-item" href="index.html#help"><span class="qi">💬</span>고객센터</a>
+  <div class="qb-sep"></div>
+  <button class="qb-item" id="qbTop" aria-label="맨 위로"><span class="qi">⬆</span>맨 위</button>
+</nav>
 
 <footer>EAT &amp; BURN · 걷기 좋은 곳<br>문의 ascq235@naver.com · 010-8330-0466</footer>
 
@@ -320,6 +348,12 @@ $("todayBtn").addEventListener("click", () => {
 });
 
 render(); pickToday();
+document.getElementById("qbTop").addEventListener("click", () => window.scrollTo({top:0, behavior:"smooth"}));
+document.getElementById("qbRegion").addEventListener("click", () => {
+  const side = document.querySelector(".side");
+  side.scrollIntoView({behavior:"smooth", block:"start"});
+  setTimeout(() => { const sel = document.getElementById("regionSelect"); if (getComputedStyle(sel).display !== "none") sel.focus(); }, 500);
+});
 </script>
 </body>
 </html>
