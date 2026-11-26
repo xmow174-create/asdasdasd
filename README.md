@@ -11,6 +11,7 @@
 | 기능 | 무료 | Pro |
 |---|---|---|
 | 음식 검색 · 칼로리 계산 (90가지 음식) | ✓ | ✓ |
+| 📸 사진 칼로리 분석 (AI) | 하루 3회 | 무제한 |
 | 유산소 9가지 운동 시간 환산 | ✓ | ✓ |
 | 목표 칼로리 계산 (Mifflin-St Jeor) | ✓ | ✓ |
 | 끼니 기록 | 하루 3회 | 무제한 |
@@ -35,6 +36,7 @@
 ```
 index.html        사이트 첫 화면 (GitHub Pages가 이 파일을 엽니다)
 tour.html         걷기 좋은 곳: 전국 공원·산책로 추천 (지역 선택)
+server/worker.js  사진 칼로리 분석 서버 코드 (Cloudflare Workers에 붙여 넣어 사용)
 promo.mp4         15초 소개 영상
 promo-poster.jpg  영상 표지
 README.md         이 설명
@@ -43,6 +45,19 @@ README.md         이 설명
 다섯 파일을 모두 저장소 맨 위(같은 위치)에 두어야 영상과 산책로 페이지가 연결됩니다.
 
 서버나 외부 API 없이 브라우저에서만 동작합니다. 기록과 Pro 상태는 각 사용자의 브라우저에 저장됩니다.
+
+## 📸 사진 인식 켜는 법
+
+사진 분석은 AI가 필요해서, API 키를 숨겨 둘 작은 서버(Cloudflare Worker)를 하나 만들어야 합니다. 서버 주소를 넣기 전에는 사이트에서 사진 분석 버튼을 누르면 '곧 열려요' 안내가 나오고, 음식 검색은 그대로 쓸 수 있습니다.
+
+1. **Anthropic API 키 만들기**: platform.claude.com(Claude 콘솔)에 가입 → 결제 정보·크레딧 등록 → API Keys에서 새 키 만들기 → 키를 복사해 둡니다. **월 사용 한도(Limits)를 꼭 정해 두세요.** 사진 1장마다 요금이 나갑니다.
+2. **Cloudflare Worker 만들기**: dash.cloudflare.com 무료 가입 → Workers & Pages → Create → Worker 만들기(이름 예: `eatburn-photo`) → Deploy.
+3. **코드 붙여 넣기**: 만든 Worker에서 Edit code → 기존 코드를 지우고 `server/worker.js` 내용을 통째로 붙여 넣기 → Deploy.
+4. **키 넣기**: Worker의 Settings → Variables and Secrets → Add → 종류 **Secret**, 이름 `ANTHROPIC_API_KEY`, 값에 1번에서 복사한 키 → 저장(Deploy).
+5. **주소 넣기**: Worker 주소(예: `https://eatburn-photo.아이디.workers.dev`)를 복사해서 `index.html`의 `사진 인식 설정` → `endpoint: ""` 따옴표 안에 붙여 넣고 저장 → GitHub에 다시 올리기.
+
+- 다른 사이트가 이 서버를 쓰지 못하게 `server/worker.js`의 `ALLOWED_ORIGINS`에 이 홈페이지 주소만 들어 있어요. 주소가 바뀌면 같이 바꿔 주세요.
+- API 키는 비밀번호와 같아요. GitHub나 index.html에는 절대 적지 마세요.
 
 ## 참고
 

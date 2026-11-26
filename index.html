@@ -530,6 +530,8 @@
     .qb-sep,.qb-desk{display:none}
     body{padding-bottom:72px}
   }
+  .photo-use{margin:8px 2px 0}
+  .photo-use .linkbtn{font-size:13px}
   /* 광고 배너 */
   .ad-sec{padding:8px 0 0}
   .ad-wrap{position:relative;border-radius:24px;overflow:hidden;min-height:190px;box-shadow:0 20px 40px -26px rgba(31,27,22,.5)}
@@ -603,8 +605,8 @@
   <div class="container">
     <div>
       <div class="eyebrow">칼로리 · 운동 환산</div>
-      <h1 class="display">먹은 음식을 고르면<br><em>얼마나 움직여야 할지</em><br>알려 드릴게요.</h1>
-      <p class="lead">먹은 음식을 검색해 고르면 칼로리를 계산하고, 그 칼로리를 다 쓰려면 걷기·달리기부터 스쿼트·레그프레스 같은 웨이트 기구까지 몇 분 해야 하는지 보여 드립니다. 내 몸에 맞춘 식단도 추천해 드려요.</p>
+      <h1 class="display">찍거나 고르면<br><em>얼마나 움직여야 할지</em><br>알려 드릴게요.</h1>
+      <p class="lead">음식 사진을 찍거나 이름을 검색하면 칼로리를 계산하고, 그 칼로리를 다 쓰려면 걷기·달리기부터 스쿼트·레그프레스 같은 웨이트 기구까지 몇 분 해야 하는지 보여 드립니다. 내 몸에 맞춘 식단도 추천해 드려요.</p>
       <div class="ctas">
         <button class="btn primary" data-go="try">🔍 지금 바로 해 보기</button>
         <button class="btn ghost" data-go="how">어떻게 동작하나요?</button>
@@ -685,6 +687,18 @@
       <button class="btn dark" data-tab="me" style="padding:10px 14px;flex:0 0 auto">설정</button>
     </div>
 
+    <label class="drop" id="drop">
+      <input type="file" id="file" accept="image/*" capture="environment">
+      <div class="big">📸</div>
+      <b>사진 찍어서 칼로리 찾기</b>
+      <small>폰에서는 카메라가 바로 열려요 · PC는 사진을 끌어다 놓거나 붙여 넣어도 돼요</small>
+      <img id="preview" alt="올린 음식 사진" hidden>
+    </label>
+    <div class="row" style="margin-top:10px"><button class="btn ghost" id="resetBtn" hidden>다른 사진</button><button class="btn primary" id="analyzeBtn" disabled>📸 사진으로 칼로리 분석</button></div>
+    <p class="note photo-use" id="photoUse"></p>
+    <div class="status" id="photoStatus"><div class="spin"></div><span>사진 속 음식을 살펴보는 중…</span></div>
+    <div class="err" id="photoErr"></div>
+    <div class="or">또는 이름으로 찾기</div>
     <div class="card search-card">
       <h2>🔍 먹은 음식 찾기</h2>
       <div class="note">음식 이름을 검색해서 고르면 칼로리를 계산해요. 여러 개를 고르면 한 끼로 합쳐져요.</div>
@@ -695,14 +709,6 @@
       <div class="note" style="margin:12px 0 6px">자주 찾는 음식</div>
       <div class="chips small" id="popular"></div>
     </div>
-    <label class="drop small-drop" id="drop">
-      <input type="file" id="file" accept="image/*" capture="environment">
-      <div class="big">📸</div>
-      <b>사진도 같이 남기기 (선택)</b>
-      <small>사진은 보기용이에요. 칼로리는 위에서 고른 음식으로 계산돼요.</small>
-      <img id="preview" alt="올린 음식 사진" hidden>
-    </label>
-    <div class="row" style="margin-top:10px"><button class="btn ghost" id="resetBtn" hidden>사진 지우기</button></div>
 
     <div class="err" id="err"></div>
 
@@ -864,6 +870,7 @@
     </div>
     <table class="cmp">
       <tr><th>기능</th><th>무료</th><th>Pro</th></tr>
+      <tr><td>사진 칼로리 분석</td><td>하루 3회</td><td class="p">무제한</td></tr>
       <tr><td>끼니 기록</td><td>하루 3회</td><td class="p">무제한</td></tr>
       <tr><td>운동 시간 환산</td><td>✓</td><td class="p">✓</td></tr>
       <tr><td>목표 칼로리 계산</td><td>✓</td><td class="p">✓</td></tr>
@@ -1107,6 +1114,7 @@
         <div class="pc-sub">가입 없이 바로</div>
         <ul>
           <li>음식 검색과 칼로리 계산</li>
+          <li>사진 칼로리 분석 하루 3회</li>
           <li>끼니 기록 하루 3회</li>
           <li>유산소 9가지로 운동 시간 환산</li>
           <li>목표 칼로리 계산</li>
@@ -1121,7 +1129,7 @@
         <div class="pc-sub" id="pcSub">연간 결제 시 39,000원 (월 3,250원꼴 · 약 34% 할인)</div>
         <ul>
           <li>무료의 모든 기능</li>
-          <li><b>끼니 기록 무제한</b></li>
+          <li><b>사진 분석 · 끼니 기록 무제한</b></li>
           <li>맞춤 하루 식단 · 다음 끼니 추천</li>
           <li>웨이트 기구별 추천 19가지</li>
           <li>맞춤 웨이트 루틴</li>
@@ -1313,6 +1321,18 @@ const BANNERS = [
   {tag: "광고 문의", icon: "📣", title: "이 자리에 브랜드를 알려 보세요", sub: "다이어트·운동 브랜드 배너 광고를 받고 있어요", button: "광고 문의하기", action: "contact", bg: "#1f1b16"},
 ];
 
+/* =====================================================================
+   ★ 사진 인식 설정 ★
+   - endpoint: 사진 분석 서버(Cloudflare Worker) 주소. 설정 방법은 README의 '사진 인식 켜는 법'을 보세요.
+     예: "https://eatburn-photo.내아이디.workers.dev"
+   - 비워 두면 사진 분석 버튼을 눌렀을 때 '곧 열려요' 안내가 나오고, 이름 검색으로 쓰게 돼요.
+   - freePerDay: 무료 사용자가 하루에 사진 분석을 할 수 있는 횟수 (Pro는 무제한)
+   ===================================================================== */
+const PHOTO_AI = {
+  endpoint: "",
+  freePerDay: 3,
+};
+
 const $ = id => document.getElementById(id);
 const FREE_LIMIT = 3;
 
@@ -1404,6 +1424,7 @@ function openPaywall(reason){
     diet: "맞춤 식단 추천은 Pro 기능이에요.",
     report: "주간 리포트는 Pro 기능이에요.",
     gym: "웨이트 기구별 추천과 맞춤 루틴은 Pro 기능이에요.",
+    photo: "오늘 무료 사진 분석을 모두 썼어요. Pro는 사진 분석을 제한 없이 쓸 수 있어요.",
   };
   $("pwReason").textContent = msgs[reason] || "더 많이 찍고, 나에게 맞게 먹고, 기록으로 확인하세요.";
   $("paywall").classList.add("on");
@@ -1428,6 +1449,7 @@ const HELP_FAQ = [
   {cat:"기록", q:"기록이 사라졌어요.", a:"기록과 내 정보는 쓰고 있는 브라우저에만 저장돼요. 인터넷 기록(쿠키·사이트 데이터)을 지우거나 시크릿 창에서 쓰면 사라질 수 있어요. 다른 기기에서는 보이지 않아요."},
   {cat:"기록", q:"하루에 몇 번까지 무료로 기록할 수 있나요?", a:"음식 검색과 칼로리·운동 시간 계산은 무료로 마음껏 쓸 수 있어요. 오늘 기록에 저장하는 것만 하루 3번까지 무료이고, Pro는 제한이 없어요."},
   {cat:"음식", q:"찾는 음식이 없어요.", a:"비슷한 음식을 골라 주세요. 예를 들어 ‘국’으로 검색하면 미역국·갈비탕 등이 나와요. 추가했으면 하는 음식은 1:1 문의의 ‘기능 제안’으로 알려 주세요."},
+  {cat:"음식", q:"사진으로 칼로리를 어떻게 알아내나요?", a:"사진을 올리면 AI가 사진 속 음식과 양을 보고 음식별 칼로리와 탄수화물·단백질·지방을 추정해요. 사진으로 본 대략 값이라, 빠진 음식은 검색으로 더하고 틀린 음식은 빼서 맞춰 주세요."},
   {cat:"음식", q:"칼로리가 정확한가요?", a:"일반적인 1인분 기준의 대략 값이에요. 식당과 조리법, 실제로 먹은 양에 따라 다를 수 있어요. ‘실제로 먹은 양’ 버튼으로 절반~2배까지 맞춰 보세요."},
   {cat:"운동", q:"운동 시간은 어떻게 계산하나요?", a:"운동마다 정해진 강도(MET)로 ‘MET × 3.5 × 몸무게 ÷ 200’을 계산해 1분에 쓰는 칼로리를 구하고, 먹은 칼로리를 그 값으로 나눠요. 웨이트는 세트 사이 휴식을 포함한 대략 값이에요."},
   {cat:"운동", q:"목표 칼로리는 어떻게 정해지나요?", a:"성별·나이·키·몸무게·활동량으로 하루 소모량을 계산하고, 감량은 약 500kcal 적게, 증가는 약 300kcal 많게 잡아요. 너무 낮아지지 않게 최소치를 두었어요. 질환이 있거나 임신 중이라면 전문가와 상의해 주세요."},
@@ -1948,7 +1970,7 @@ function addFood(idx){
 function buildCurrent(){
   if (!plate.length){ current = null; $("result").classList.remove("on"); return; }
   current = {
-    dish: plate.length === 1 ? plate[0].name : `${plate[0].name} 외 ${plate.length - 1}개`,
+    dish: plateTitle || (plate.length === 1 ? plate[0].name : `${plate[0].name} 외 ${plate.length - 1}개`),
     items: plate.map(x => ({name:x.name, portion:x.portion, kcal:x.kcal})),
     total: plate.reduce((s, x) => s + x.kcal, 0),
     carbs_g: plate.reduce((s, x) => s + x.c, 0),
@@ -1967,23 +1989,78 @@ $("popular").innerHTML = ["공깃밥","김치찌개","라면","김밥","떡볶�
   .map(n => `<button data-food="${FOODS.findIndex(f => f[0] === n)}">${n}</button>`).join("");
 $("popular").addEventListener("click", e => { const b = e.target.closest("button[data-food]"); if (b) addFood(Number(b.dataset.food)); });
 $("items").addEventListener("click", e => { const b = e.target.closest("button[data-rm]"); if (!b) return; plate.splice(Number(b.dataset.rm), 1); buildCurrent(); });
-$("newPlate").addEventListener("click", () => { plate = []; mult = 1; document.querySelectorAll("#seg button").forEach(b => b.classList.toggle("on", b.dataset.m === "1")); buildCurrent(); $("foodQ").focus(); });
+$("newPlate").addEventListener("click", () => { plate = []; plateTitle = ""; mult = 1; document.querySelectorAll("#seg button").forEach(b => b.classList.toggle("on", b.dataset.m === "1")); buildCurrent(); $("foodQ").focus(); });
 
-/* 사진은 기록용 미리보기만 */
-let imageBlob = null;
-function setImage(file){
+/* ---------- 사진으로 칼로리 분석 ---------- */
+let imageB64 = "", plateTitle = "";
+const photoUsed = () => (store.get("eb-photo", {})[dKey()] || 0);
+function renderPhotoUse(){
+  if (!PHOTO_AI.endpoint){ $("photoUse").textContent = "📸 사진 인식은 곧 열려요. 지금은 아래에서 음식 이름을 검색해 주세요."; return; }
+  $("photoUse").innerHTML = isPro() ? "👑 Pro · 사진 분석 <b>무제한</b>" : `오늘 무료 사진 분석 <b>${Math.max(0, PHOTO_AI.freePerDay - photoUsed())}회</b> 남음 · <button class="linkbtn" data-upgrade="limit">무제한으로 쓰기</button>`;
+}
+function shrinkPhoto(file){
+  return new Promise((resolve, reject) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => {
+      const max = 1024; let w = img.width, h = img.height;
+      if (w > max || h > max){ const r = Math.min(max / w, max / h); w = Math.round(w * r); h = Math.round(h * r); }
+      const c = document.createElement("canvas"); c.width = w; c.height = h;
+      c.getContext("2d").drawImage(img, 0, 0, w, h);
+      URL.revokeObjectURL(url);
+      resolve(c.toDataURL("image/jpeg", 0.85));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("사진을 열 수 없어요. 다른 사진으로 해 주세요.")); };
+    img.src = url;
+  });
+}
+async function setImage(file){
   if (!file || !file.type.startsWith("image/")) return;
-  imageBlob = file;
-  $("preview").src = URL.createObjectURL(file); $("preview").hidden = false;
-  $("drop").classList.add("has-img"); $("resetBtn").hidden = false;
+  hide("photoErr");
+  try{
+    const dataUrl = await shrinkPhoto(file);
+    imageB64 = dataUrl.split(",")[1];
+    $("preview").src = dataUrl; $("preview").hidden = false;
+    $("drop").classList.add("has-img"); $("resetBtn").hidden = false; $("analyzeBtn").disabled = false;
+  }catch(e){ show("photoErr", e.message); }
 }
 $("file").addEventListener("change", e => setImage(e.target.files[0]));
 const drop = $("drop");
 ["dragenter","dragover"].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add("over"); }));
 ["dragleave","drop"].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.remove("over"); }));
 drop.addEventListener("drop", e => setImage(e.dataTransfer.files[0]));
+document.addEventListener("paste", e => { const f = [...(e.clipboardData?.files || [])].find(f => f.type.startsWith("image/")); if (f) setImage(f); });
 $("resetBtn").addEventListener("click", () => {
-  imageBlob = null; $("preview").hidden = true; $("drop").classList.remove("has-img"); $("resetBtn").hidden = true; $("file").value = "";
+  imageB64 = ""; $("preview").hidden = true; $("drop").classList.remove("has-img"); $("resetBtn").hidden = true; $("file").value = ""; $("analyzeBtn").disabled = true; hide("photoErr");
+});
+$("analyzeBtn").addEventListener("click", async () => {
+  if (!imageB64) return;
+  if (!PHOTO_AI.endpoint){ show("photoErr", "사진 인식은 곧 열려요. 지금은 아래에서 음식 이름을 검색해 골라 주세요."); return; }
+  if (!isPro() && photoUsed() >= PHOTO_AI.freePerDay){ openPaywall("photo"); return; }
+  hide("photoErr"); $("photoStatus").classList.add("on"); $("analyzeBtn").disabled = true;
+  const ctrl = new AbortController(), timer = setTimeout(() => ctrl.abort(), 45000);
+  try{
+    const r = await fetch(PHOTO_AI.endpoint, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({image: imageB64}), signal: ctrl.signal});
+    const d = await r.json().catch(() => null);
+    if (!r.ok || !d) throw new Error((d && d.error) || "사진 분석 서버에 연결하지 못했어요. 잠시 뒤에 다시 시도해 주세요.");
+    if (d.is_food === false){ show("photoErr", "음식이 잘 안 보여요. " + (d.note || "음식이 잘 보이게 다시 찍어 주세요.")); return; }
+    const items = (Array.isArray(d.items) ? d.items : []).filter(x => x && x.name && Number(x.kcal) > 0);
+    if (!items.length) throw new Error("음식을 찾지 못했어요. 아래에서 이름으로 검색해 주세요.");
+    const u = store.get("eb-photo", {}); store.set("eb-photo", {[dKey()]: (u[dKey()] || 0) + 1});
+    const tot = items.reduce((a, x) => a + Number(x.kcal), 0);
+    plate = items.map(x => {
+      const share = Number(x.kcal) / tot;
+      const pick = (k, total) => Number.isFinite(Number(x[k])) ? Number(x[k]) : Math.round((Number(total) || 0) * share);
+      return {name: String(x.name), portion: String(x.portion || ""), kcal: Math.round(Number(x.kcal)), c: pick("carbs_g", d.carbs_g), p: pick("protein_g", d.protein_g), fat: pick("fat_g", d.fat_g)};
+    });
+    plateTitle = d.dish ? String(d.dish) : "";
+    mult = 1; document.querySelectorAll("#seg button").forEach(b => b.classList.toggle("on", b.dataset.m === "1"));
+    buildCurrent();
+    current.note = (d.note ? d.note + " " : "") + "사진으로 추정한 값이에요. 빠진 음식은 아래 검색으로 더하고, 틀린 건 ✕로 빼 주세요.";
+    renderResult(); $("result").classList.add("on"); renderPhotoUse();
+    $("result").scrollIntoView({behavior: "smooth", block: "start"});
+  }catch(e){
+    show("photoErr", e.name === "AbortError" ? "분석이 너무 오래 걸려요. 잠시 뒤에 다시 시도해 주세요." : e.message);
+  }finally{ clearTimeout(timer); $("photoStatus").classList.remove("on"); $("analyzeBtn").disabled = !imageB64; }
 });
 
 function exRows(total, kg){
@@ -2459,7 +2536,7 @@ function show(id, m){ $(id).textContent = m; $(id).classList.add("on"); }
 function hide(id){ $(id).classList.remove("on"); }
 let tt; function toast(m){ const t = $("toast"); t.textContent = m; t.classList.add("on"); clearTimeout(tt); tt = setTimeout(() => t.classList.remove("on"), 1900); }
 function refreshAll(){
-  renderPrices(); renderShops();
+  renderPrices(); renderShops(); renderPhotoUse();
   if (!$("adTrack").children.length) renderBanners();
   renderBadge(); renderUsage(); renderLog();
   if ($("v-diet").classList.contains("on")) renderDiet();
