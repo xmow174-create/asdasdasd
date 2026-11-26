@@ -511,6 +511,34 @@
   .wl-box h2{font-size:clamp(26px,3.4vw,34px);margin:6px 0}
   .wl-box p{color:#dcefe5}
   .wl-box .btn{background:#fff;color:var(--green-ink);text-decoration:none}
+  /* 광고 배너 */
+  .ad-sec{padding:8px 0 0}
+  .ad-wrap{position:relative;border-radius:24px;overflow:hidden;min-height:190px;box-shadow:0 20px 40px -26px rgba(31,27,22,.5)}
+  .ad-track{position:relative;min-height:190px}
+  .ad-slide{position:absolute;inset:0;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:26px;padding:28px 72px 34px;background:var(--bg-ad, var(--bg));background:linear-gradient(120deg,var(--bg) 0%,color-mix(in srgb,var(--bg) 78%,#000) 100%);color:#fff;opacity:0;visibility:hidden;transition:opacity .5s ease, visibility .5s}
+  .ad-slide.on{opacity:1;visibility:visible}
+  .ad-slide::after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.08);right:-60px;top:-110px;pointer-events:none}
+  .ad-label{position:absolute;top:12px;right:16px;font-size:11px;font-weight:700;background:rgba(0,0,0,.25);border-radius:6px;padding:2px 7px;letter-spacing:.04em}
+  .ad-icon{width:104px;height:104px;border-radius:28px;background:rgba(255,255,255,.16);display:grid;place-items:center;font-size:58px}
+  .ad-tag{display:inline-block;font-size:12px;font-weight:700;background:rgba(255,255,255,.2);border-radius:999px;padding:3px 10px;margin-bottom:8px}
+  .ad-text h3{font-family:var(--display);font-weight:400;font-size:clamp(22px,2.8vw,32px);line-height:1.2}
+  .ad-text p{opacity:.88;margin-top:6px;font-size:15.5px}
+  .ad-btn{position:relative;z-index:1;display:inline-flex;align-items:center;border:none;background:#fff;color:var(--ink);font:inherit;font-weight:700;font-size:15px;padding:13px 20px;border-radius:14px;text-decoration:none;cursor:pointer;white-space:nowrap}
+  .ad-btn:hover{transform:translateY(-1px)}
+  .ad-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:2;width:38px;height:38px;border-radius:50%;border:none;background:rgba(255,255,255,.22);color:#fff;font-size:24px;line-height:1;cursor:pointer}
+  .ad-nav:hover{background:rgba(255,255,255,.35)}
+  .ad-nav.prev{left:14px} .ad-nav.next{right:14px}
+  .ad-dots{position:absolute;left:0;right:0;bottom:12px;display:flex;justify-content:center;gap:7px;z-index:2}
+  .ad-dots button{width:8px;height:8px;border-radius:999px;border:none;background:rgba(255,255,255,.45);cursor:pointer;padding:0;transition:width .2s}
+  .ad-dots button.on{width:22px;background:#fff}
+  .ad-notice{font-size:12px;color:var(--muted);margin-top:8px;text-align:center}
+  @media (max-width:760px){
+    .ad-wrap,.ad-track{min-height:300px}
+    .ad-slide{grid-template-columns:1fr;gap:10px;padding:22px 22px 50px;text-align:left;align-content:center}
+    .ad-wrap,.ad-track{min-height:320px}
+    .ad-icon{width:64px;height:64px;font-size:36px;border-radius:18px}
+    .ad-nav{display:none}
+  }
   /* faq */
   .faq{max-width:780px}
   details{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:0 22px;margin-bottom:10px}
@@ -587,195 +615,19 @@
   </div>
 </header>
 
-<section class="promo-sec" id="video">
+<section class="ad-sec" id="ads" aria-label="추천 광고">
   <div class="container">
-    <div class="sec-head reveal" style="text-align:center;margin-left:auto;margin-right:auto">
-      <div class="eyebrow">15초 소개 영상</div>
-      <h2 class="display">15초로 보는 EAT &amp; BURN</h2>
+    <div class="ad-wrap">
+      <div class="ad-track" id="adTrack"></div>
+      <button class="ad-nav prev" id="adPrev" aria-label="이전 광고">‹</button>
+      <button class="ad-nav next" id="adNext" aria-label="다음 광고">›</button>
+      <div class="ad-dots" id="adDots"></div>
     </div>
-    <div class="promo-frame reveal">
-      <video id="promoVideo" src="promo.mp4" poster="promo-poster.jpg" muted loop playsinline preload="metadata" aria-label="EAT & BURN 15초 소개 영상"></video>
-      <button class="promo-toggle" id="promoToggle" aria-label="영상 일시정지">❚❚</button>
-    </div>
+    <p class="ad-notice" id="adNotice" hidden></p>
   </div>
 </section>
 
-<div class="band">
-  <div class="container">
-    <div class="big reveal">500<small>kcal</small></div>
-    <div class="reveal">
-      <h2 class="display">이 숫자, 몸으로 느끼면 이 정도예요</h2>
-      <div class="band-grid">
-        <div><span>🚶 걷기</span><b>2시간 6분</b></div>
-        <div><span>🏃 달리기</span><b>53분</b></div>
-        <div><span>🪢 줄넘기</span><b>40분</b></div>
-      </div>
-      <p class="fine">체중 65kg 기준, 한 가지 운동만 했을 때의 계산값입니다.</p>
-    </div>
-  </div>
-</div>
-
-<section class="block" id="how">
-  <div class="container">
-    <div class="sec-head reveal">
-      <div class="eyebrow">사용 방법</div>
-      <h2 class="display">세 단계면 끝납니다</h2>
-    </div>
-    <div class="steps">
-      <div class="step reveal"><div class="num">01</div><h3>고르기</h3><p>먹은 음식을 검색해서 골라요. 밥·찌개·반찬처럼 여러 개를 골라 한 끼로 합칠 수 있어요</p></div>
-      <div class="step reveal"><div class="num">02</div><h3>확인하기</h3><p>한 끼의 칼로리와 탄수화물·단백질·지방을 바로 계산해 보여 줍니다</p></div>
-      <div class="step reveal"><div class="num">03</div><h3>태우기</h3><p>그 칼로리를 다 쓰려면 어떤 운동을 몇 분 해야 하는지, 짧은 시간 순으로 보여 드립니다.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="block" id="features" style="padding-top:0">
-  <div class="container">
-    <div class="sec-head reveal">
-      <div class="eyebrow">기능</div>
-      <h2 class="display">숫자를 행동으로 바꾸는 기능들</h2>
-    </div>
-    <div class="features">
-      <div class="feature reveal"><div class="ic">🍱</div><div><h3>음식별 칼로리</h3><p>밥, 국, 반찬, 음료까지 따로 나눠 계산해 어디서 칼로리가 많이 나오는지 보여 줍니다.</p></div></div>
-      <div class="feature reveal"><div class="ic">🏃</div><div><h3>유산소 9가지 + 웨이트 19가지</h3><p>걷기·달리기·수영 등 유산소 9가지는 무료로, 스쿼트·레그프레스 같은 웨이트 기구 19가지는 Pro에서 필요한 시간을 알려 줍니다.</p></div></div>
-      <div class="feature reveal"><div class="ic">🥄</div><div><h3>먹은 양 조절</h3><p>절반만 먹었나요? 절반·조금·그대로·1.5배·2배 중에 고르면 바로 다시 계산됩니다.</p></div></div>
-      <div class="feature reveal"><div class="ic">⚖️</div><div><h3>내 몸에 맞춘 목표 칼로리</h3><p>성별·나이·키·몸무게·활동량으로 하루 목표 칼로리와 탄·단·지 권장량을 계산하고, 오늘 남은 칼로리를 보여 줍니다.</p></div></div>
-      <div class="feature reveal"><div class="ic">📅</div><div><h3>오늘 먹은 음식 기록</h3><p>분석한 음식을 추가하면 하루 합계와 “오늘 먹은 만큼 걷기 몇 시간”이 한 줄로 정리됩니다.</p></div></div>
-      <div class="feature reveal"><div class="ic">🥗</div><div><h3>탄·단·지 한눈에</h3><p>칼로리뿐 아니라 탄수화물·단백질·지방을 그램 단위로 함께 보여 줍니다.</p></div></div>
-    </div>
-  </div>
-</section>
-
-<section class="pro-sec" id="pro">
-  <div class="container">
-    <div class="sec-head reveal">
-      <div class="eyebrow" style="color:#f0b84b">👑 EAT &amp; BURN PRO</div>
-      <h2 class="display">먹는 것도, 태우는 것도<br>나에게 딱 맞게</h2>
-      <p>Pro에서는 기록을 제한 없이 하고, 내 몸과 목표에 맞춘 식단과 웨이트 운동까지 추천받을 수 있어요.</p>
-    </div>
-    <div class="pro-grid">
-      <div class="pro-card reveal">
-        <div class="pc-ic">🥗</div><h3>맞춤 식단 추천</h3>
-        <p>키·몸무게·나이·활동량으로 하루 목표 칼로리를 계산하고, 목표에 맞는 하루 식단을 골라 드려요. 한식 위주, 고단백, 편의점, 저탄수, 채식 중에 고르고 못 먹는 음식은 빼 드려요.</p>
-        <div class="pc-demo">
-          <div><span>아침</span>두부 달걀 스크램블<b>380</b></div>
-          <div><span>점심</span>현미 비빔밥 + 닭가슴살<b>560</b></div>
-          <div><span>저녁</span>고등어구이 정식<b>520</b></div>
-          <small>추천 예시 · 실제 식단은 목표 칼로리에 맞춰 골라져요</small>
-        </div>
-      </div>
-      <div class="pro-card reveal">
-        <div class="pc-ic">🏋️</div><h3>웨이트 기구별 추천</h3>
-        <p>스쿼트, 레그프레스, 벤치프레스, 랫풀다운부터 천국의 계단까지 19가지 기구마다 칼로리를 다 쓰는 데 걸리는 시간과 목표에 맞는 세트·횟수, 자세 팁을 알려 드려요.</p>
-        <div class="pc-demo">
-          <div><span>스텝밀</span>천국의 계단<b>49분</b></div>
-          <div><span>케틀벨</span>케틀벨 스윙<b>55분</b></div>
-          <div><span>바벨</span>바벨 스쿼트<b>1시간 13분</b></div>
-          <div><span>머신</span>레그프레스<b>1시간 28분</b></div>
-          <small>500kcal · 65kg 기준 · 휴식 포함 대략 값</small>
-        </div>
-      </div>
-      <div class="pro-card reveal">
-        <div class="pc-ic">📋</div><h3>맞춤 웨이트 루틴</h3>
-        <p>헬스장에 있는 기구(덤벨·바벨·머신·케이블·케틀벨·맨몸)와 운동 시간, 집중 부위를 고르면 워밍업부터 마무리까지 오늘 할 루틴을 짜 드려요.</p>
-      </div>
-      <div class="pro-card reveal">
-        <div class="pc-ic">📊</div><h3>주간 리포트 · 무제한 분석</h3>
-        <p>최근 7일 섭취 칼로리를 목표선과 비교하고, 목표를 지킨 날과 자주 먹은 음식을 보여 드려요. 끼니 기록도 횟수 제한 없이 할 수 있어요.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="block" id="pricing">
-  <div class="container">
-    <div class="sec-head reveal" style="text-align:center;margin-left:auto;margin-right:auto">
-      <div class="eyebrow">요금제</div>
-      <h2 class="display">무료로 시작하고, 필요할 때 Pro로</h2>
-    </div>
-    <div class="pricing">
-      <div class="price-card reveal">
-        <div class="pc-name">무료</div>
-        <div class="pc-price">0원</div>
-        <div class="pc-sub">가입 없이 바로</div>
-        <ul>
-          <li>음식 검색과 칼로리 계산</li>
-          <li>끼니 기록 하루 3회</li>
-          <li>유산소 9가지로 운동 시간 환산</li>
-          <li>목표 칼로리 계산</li>
-          <li>오늘 먹은 음식 기록</li>
-        </ul>
-        <button class="btn ghost" data-go="try">무료로 써 보기</button>
-      </div>
-      <div class="price-card pro reveal">
-        <span class="pc-badge">추천</span>
-        <div class="pc-name">👑 Pro</div>
-        <div class="pc-price" id="pcPrice">4,900원<small> / 월</small></div>
-        <div class="pc-sub" id="pcSub">연간 결제 시 39,000원 (월 3,250원꼴 · 약 34% 할인)</div>
-        <ul>
-          <li>무료의 모든 기능</li>
-          <li><b>끼니 기록 무제한</b></li>
-          <li>맞춤 하루 식단 · 다음 끼니 추천</li>
-          <li>웨이트 기구별 추천 19가지</li>
-          <li>맞춤 웨이트 루틴</li>
-          <li>주간 리포트</li>
-        </ul>
-        <div class="pc-btns"><button class="btn pro" data-buy="month">월간 결제</button><button class="btn dark" data-buy="year">연간 결제</button></div>
-      </div>
-    </div>
-    <div class="pdf-card reveal" id="pdfCard">
-      <div class="pdf-cover"><b>4주</b><span>다이어트<br>식단·운동<br>플랜</span><i>PDF</i></div>
-      <div class="pdf-body">
-        <div class="pc-name">📘 한 번만 사면 끝 · 단품</div>
-        <h3 id="pdfName">4주 다이어트 식단·운동 플랜 (PDF)</h3>
-        <ul>
-          <li>하루 약 1,600kcal 예시 식단 8일분 (주차별 2가지)</li>
-          <li>1~4주차 운동 계획: 걷기 → 기구 입문 → 상하체 분할</li>
-          <li>장보기 목록 · 외식·배달 칼로리 줄이는 법</li>
-          <li>28일 체크리스트 (인쇄해서 쓰기 좋아요)</li>
-        </ul>
-        <div class="pdf-buy"><div class="pc-price" id="pdfPrice">2,900원</div><button class="btn pro" data-buy="pdf">구매하기</button></div>
-        <p class="note">입금이 확인되면 적어 주신 이메일로 PDF를 보내 드려요.</p>
-      </div>
-    </div>
-    <p class="price-fine" id="priceFine">결제는 계좌이체로 받아요. 입금이 확인되면 Pro 코드를 보내 드리고, 코드를 입력하면 바로 Pro가 열려요.</p>
-  </div>
-</section>
-
-<section class="block" id="calc" style="padding-top:0">
-  <div class="container">
-    <div class="sec-head reveal">
-      <div class="eyebrow">운동 계산기</div>
-      <h2 class="display">칼로리를 알고 있다면, 바로 계산해 보세요</h2>
-      <p>사진 없이도 됩니다. 칼로리와 몸무게를 움직이면 운동 시간이 바로 바뀝니다.</p>
-    </div>
-    <div class="calc reveal">
-      <div>
-        <div class="field">
-          <label for="cKcal">먹은 칼로리</label>
-          <div class="val"><span id="cKcalV">500</span><small>kcal</small></div>
-          <input type="range" id="cKcal" min="50" max="2000" step="10" value="500">
-          <div class="presets" id="presets">
-            <button data-k="150">가벼운 간식 150</button>
-            <button data-k="500">한 끼 500</button>
-            <button data-k="800">든든한 한 끼 800</button>
-          </div>
-        </div>
-        <div class="field">
-          <label for="cW">내 몸무게</label>
-          <div class="val w"><span id="cWV">65</span><small>kg</small></div>
-          <input type="range" id="cW" min="30" max="150" step="1" value="65">
-        </div>
-      </div>
-      <div>
-        <div class="ex-list" id="calcList"></div>
-        <p class="formula">1분 소모 kcal = MET(운동 강도) × 3.5 × 체중(kg) ÷ 200 · 한 가지 운동만 했을 때 기준</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="block try" id="try">
+<section class="block try" id="try" style="padding-top:56px">
   <div class="container">
     <div class="sec-head reveal" style="text-align:center;margin-left:auto;margin-right:auto">
       <div class="eyebrow">지금 써 보기</div>
@@ -1114,6 +966,195 @@
   </div>
 </section>
 
+
+<section class="promo-sec" id="video">
+  <div class="container">
+    <div class="sec-head reveal" style="text-align:center;margin-left:auto;margin-right:auto">
+      <div class="eyebrow">15초 소개 영상</div>
+      <h2 class="display">15초로 보는 EAT &amp; BURN</h2>
+    </div>
+    <div class="promo-frame reveal">
+      <video id="promoVideo" src="promo.mp4" poster="promo-poster.jpg" muted loop playsinline preload="metadata" aria-label="EAT & BURN 15초 소개 영상"></video>
+      <button class="promo-toggle" id="promoToggle" aria-label="영상 일시정지">❚❚</button>
+    </div>
+  </div>
+</section>
+
+<div class="band">
+  <div class="container">
+    <div class="big reveal">500<small>kcal</small></div>
+    <div class="reveal">
+      <h2 class="display">이 숫자, 몸으로 느끼면 이 정도예요</h2>
+      <div class="band-grid">
+        <div><span>🚶 걷기</span><b>2시간 6분</b></div>
+        <div><span>🏃 달리기</span><b>53분</b></div>
+        <div><span>🪢 줄넘기</span><b>40분</b></div>
+      </div>
+      <p class="fine">체중 65kg 기준, 한 가지 운동만 했을 때의 계산값입니다.</p>
+    </div>
+  </div>
+</div>
+
+<section class="block" id="how">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="eyebrow">사용 방법</div>
+      <h2 class="display">세 단계면 끝납니다</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="num">01</div><h3>고르기</h3><p>먹은 음식을 검색해서 골라요. 밥·찌개·반찬처럼 여러 개를 골라 한 끼로 합칠 수 있어요</p></div>
+      <div class="step reveal"><div class="num">02</div><h3>확인하기</h3><p>한 끼의 칼로리와 탄수화물·단백질·지방을 바로 계산해 보여 줍니다</p></div>
+      <div class="step reveal"><div class="num">03</div><h3>태우기</h3><p>그 칼로리를 다 쓰려면 어떤 운동을 몇 분 해야 하는지, 짧은 시간 순으로 보여 드립니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="features" style="padding-top:0">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="eyebrow">기능</div>
+      <h2 class="display">숫자를 행동으로 바꾸는 기능들</h2>
+    </div>
+    <div class="features">
+      <div class="feature reveal"><div class="ic">🍱</div><div><h3>음식별 칼로리</h3><p>밥, 국, 반찬, 음료까지 따로 나눠 계산해 어디서 칼로리가 많이 나오는지 보여 줍니다.</p></div></div>
+      <div class="feature reveal"><div class="ic">🏃</div><div><h3>유산소 9가지 + 웨이트 19가지</h3><p>걷기·달리기·수영 등 유산소 9가지는 무료로, 스쿼트·레그프레스 같은 웨이트 기구 19가지는 Pro에서 필요한 시간을 알려 줍니다.</p></div></div>
+      <div class="feature reveal"><div class="ic">🥄</div><div><h3>먹은 양 조절</h3><p>절반만 먹었나요? 절반·조금·그대로·1.5배·2배 중에 고르면 바로 다시 계산됩니다.</p></div></div>
+      <div class="feature reveal"><div class="ic">⚖️</div><div><h3>내 몸에 맞춘 목표 칼로리</h3><p>성별·나이·키·몸무게·활동량으로 하루 목표 칼로리와 탄·단·지 권장량을 계산하고, 오늘 남은 칼로리를 보여 줍니다.</p></div></div>
+      <div class="feature reveal"><div class="ic">📅</div><div><h3>오늘 먹은 음식 기록</h3><p>분석한 음식을 추가하면 하루 합계와 “오늘 먹은 만큼 걷기 몇 시간”이 한 줄로 정리됩니다.</p></div></div>
+      <div class="feature reveal"><div class="ic">🥗</div><div><h3>탄·단·지 한눈에</h3><p>칼로리뿐 아니라 탄수화물·단백질·지방을 그램 단위로 함께 보여 줍니다.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="pro-sec" id="pro">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="eyebrow" style="color:#f0b84b">👑 EAT &amp; BURN PRO</div>
+      <h2 class="display">먹는 것도, 태우는 것도<br>나에게 딱 맞게</h2>
+      <p>Pro에서는 기록을 제한 없이 하고, 내 몸과 목표에 맞춘 식단과 웨이트 운동까지 추천받을 수 있어요.</p>
+    </div>
+    <div class="pro-grid">
+      <div class="pro-card reveal">
+        <div class="pc-ic">🥗</div><h3>맞춤 식단 추천</h3>
+        <p>키·몸무게·나이·활동량으로 하루 목표 칼로리를 계산하고, 목표에 맞는 하루 식단을 골라 드려요. 한식 위주, 고단백, 편의점, 저탄수, 채식 중에 고르고 못 먹는 음식은 빼 드려요.</p>
+        <div class="pc-demo">
+          <div><span>아침</span>두부 달걀 스크램블<b>380</b></div>
+          <div><span>점심</span>현미 비빔밥 + 닭가슴살<b>560</b></div>
+          <div><span>저녁</span>고등어구이 정식<b>520</b></div>
+          <small>추천 예시 · 실제 식단은 목표 칼로리에 맞춰 골라져요</small>
+        </div>
+      </div>
+      <div class="pro-card reveal">
+        <div class="pc-ic">🏋️</div><h3>웨이트 기구별 추천</h3>
+        <p>스쿼트, 레그프레스, 벤치프레스, 랫풀다운부터 천국의 계단까지 19가지 기구마다 칼로리를 다 쓰는 데 걸리는 시간과 목표에 맞는 세트·횟수, 자세 팁을 알려 드려요.</p>
+        <div class="pc-demo">
+          <div><span>스텝밀</span>천국의 계단<b>49분</b></div>
+          <div><span>케틀벨</span>케틀벨 스윙<b>55분</b></div>
+          <div><span>바벨</span>바벨 스쿼트<b>1시간 13분</b></div>
+          <div><span>머신</span>레그프레스<b>1시간 28분</b></div>
+          <small>500kcal · 65kg 기준 · 휴식 포함 대략 값</small>
+        </div>
+      </div>
+      <div class="pro-card reveal">
+        <div class="pc-ic">📋</div><h3>맞춤 웨이트 루틴</h3>
+        <p>헬스장에 있는 기구(덤벨·바벨·머신·케이블·케틀벨·맨몸)와 운동 시간, 집중 부위를 고르면 워밍업부터 마무리까지 오늘 할 루틴을 짜 드려요.</p>
+      </div>
+      <div class="pro-card reveal">
+        <div class="pc-ic">📊</div><h3>주간 리포트 · 무제한 분석</h3>
+        <p>최근 7일 섭취 칼로리를 목표선과 비교하고, 목표를 지킨 날과 자주 먹은 음식을 보여 드려요. 끼니 기록도 횟수 제한 없이 할 수 있어요.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="pricing">
+  <div class="container">
+    <div class="sec-head reveal" style="text-align:center;margin-left:auto;margin-right:auto">
+      <div class="eyebrow">요금제</div>
+      <h2 class="display">무료로 시작하고, 필요할 때 Pro로</h2>
+    </div>
+    <div class="pricing">
+      <div class="price-card reveal">
+        <div class="pc-name">무료</div>
+        <div class="pc-price">0원</div>
+        <div class="pc-sub">가입 없이 바로</div>
+        <ul>
+          <li>음식 검색과 칼로리 계산</li>
+          <li>끼니 기록 하루 3회</li>
+          <li>유산소 9가지로 운동 시간 환산</li>
+          <li>목표 칼로리 계산</li>
+          <li>오늘 먹은 음식 기록</li>
+        </ul>
+        <button class="btn ghost" data-go="try">무료로 써 보기</button>
+      </div>
+      <div class="price-card pro reveal">
+        <span class="pc-badge">추천</span>
+        <div class="pc-name">👑 Pro</div>
+        <div class="pc-price" id="pcPrice">4,900원<small> / 월</small></div>
+        <div class="pc-sub" id="pcSub">연간 결제 시 39,000원 (월 3,250원꼴 · 약 34% 할인)</div>
+        <ul>
+          <li>무료의 모든 기능</li>
+          <li><b>끼니 기록 무제한</b></li>
+          <li>맞춤 하루 식단 · 다음 끼니 추천</li>
+          <li>웨이트 기구별 추천 19가지</li>
+          <li>맞춤 웨이트 루틴</li>
+          <li>주간 리포트</li>
+        </ul>
+        <div class="pc-btns"><button class="btn pro" data-buy="month">월간 결제</button><button class="btn dark" data-buy="year">연간 결제</button></div>
+      </div>
+    </div>
+    <div class="pdf-card reveal" id="pdfCard">
+      <div class="pdf-cover"><b>4주</b><span>다이어트<br>식단·운동<br>플랜</span><i>PDF</i></div>
+      <div class="pdf-body">
+        <div class="pc-name">📘 한 번만 사면 끝 · 단품</div>
+        <h3 id="pdfName">4주 다이어트 식단·운동 플랜 (PDF)</h3>
+        <ul>
+          <li>하루 약 1,600kcal 예시 식단 8일분 (주차별 2가지)</li>
+          <li>1~4주차 운동 계획: 걷기 → 기구 입문 → 상하체 분할</li>
+          <li>장보기 목록 · 외식·배달 칼로리 줄이는 법</li>
+          <li>28일 체크리스트 (인쇄해서 쓰기 좋아요)</li>
+        </ul>
+        <div class="pdf-buy"><div class="pc-price" id="pdfPrice">2,900원</div><button class="btn pro" data-buy="pdf">구매하기</button></div>
+        <p class="note">입금이 확인되면 적어 주신 이메일로 PDF를 보내 드려요.</p>
+      </div>
+    </div>
+    <p class="price-fine" id="priceFine">결제는 계좌이체로 받아요. 입금이 확인되면 Pro 코드를 보내 드리고, 코드를 입력하면 바로 Pro가 열려요.</p>
+  </div>
+</section>
+
+<section class="block" id="calc" style="padding-top:0">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="eyebrow">운동 계산기</div>
+      <h2 class="display">칼로리를 알고 있다면, 바로 계산해 보세요</h2>
+      <p>사진 없이도 됩니다. 칼로리와 몸무게를 움직이면 운동 시간이 바로 바뀝니다.</p>
+    </div>
+    <div class="calc reveal">
+      <div>
+        <div class="field">
+          <label for="cKcal">먹은 칼로리</label>
+          <div class="val"><span id="cKcalV">500</span><small>kcal</small></div>
+          <input type="range" id="cKcal" min="50" max="2000" step="10" value="500">
+          <div class="presets" id="presets">
+            <button data-k="150">가벼운 간식 150</button>
+            <button data-k="500">한 끼 500</button>
+            <button data-k="800">든든한 한 끼 800</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="cW">내 몸무게</label>
+          <div class="val w"><span id="cWV">65</span><small>kg</small></div>
+          <input type="range" id="cW" min="30" max="150" step="1" value="65">
+        </div>
+      </div>
+      <div>
+        <div class="ex-list" id="calcList"></div>
+        <p class="formula">1분 소모 kcal = MET(운동 강도) × 3.5 × 체중(kg) ÷ 200 · 한 가지 운동만 했을 때 기준</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="block" id="faq">
   <div class="container">
     <div class="sec-head reveal">
@@ -1227,6 +1268,23 @@ const COUPANG = {
     {for: "gym", icon: "🎗️", name: "운동 밴드", note: "근력 보조", url: ""},
   ],
 };
+
+/* =====================================================================
+   ★ 광고 배너 설정 ★
+   - 첫 화면 바로 아래에 5초마다 넘어가는 광고 배너로 보여요.
+   - url에 쿠팡 파트너스 링크를 넣으면 그 링크로 연결되고 수수료를 받을 수 있어요.
+   - url이 비어 있으면 쿠팡에서 search(검색어)로 검색한 화면으로 연결돼요. (이때는 수수료 없음)
+   - action: "contact" 는 '광고 문의' 배너예요. 다른 업체에 광고 자리를 팔 때 써요.
+   - 배너를 빼고 싶으면 그 줄을 지우고, 순서를 바꾸고 싶으면 줄 순서를 바꾸면 돼요.
+   ===================================================================== */
+const BANNERS = [
+  {tag: "단백질", icon: "🍗", title: "닭가슴살 한 달 치, 냉동실에 쟁여 두기", sub: "끼니마다 단백질 한 가지 · 소분 팩이라 데우기만 하면 끝", button: "닭가슴살 보러 가기", search: "닭가슴살 소분", url: "", bg: "#2f7d5b"},
+  {tag: "운동 후", icon: "🥤", title: "운동 끝나고 프로틴 쉐이크 한 잔", sub: "웨이트 루틴 마무리는 단백질 보충으로", button: "프로틴 보러 가기", search: "프로틴 쉐이크", url: "", bg: "#e2552b"},
+  {tag: "간식", icon: "🍮", title: "달달한 게 당길 땐 곤약 젤리", sub: "저칼로리 간식으로 군것질 칼로리 줄이기", button: "곤약 젤리 보러 가기", search: "곤약젤리 저칼로리", url: "", bg: "#8a4fbf"},
+  {tag: "한 끼", icon: "🥗", title: "샐러드 정기배송으로 점심 고민 끝", sub: "목표 칼로리에 맞춘 가벼운 한 끼", button: "샐러드 보러 가기", search: "샐러드 도시락", url: "", bg: "#3c7fb8"},
+  {tag: "아침", icon: "🥣", title: "그릭요거트 + 그래놀라 아침", sub: "5분이면 준비하는 고단백 아침", button: "그릭요거트 보러 가기", search: "그릭요거트 무가당", url: "", bg: "#c99a2e"},
+  {tag: "광고 문의", icon: "📣", title: "이 자리에 브랜드를 알려 보세요", sub: "다이어트·운동 브랜드 배너 광고를 받고 있어요", button: "광고 문의하기", action: "contact", bg: "#1f1b16"},
+];
 
 const $ = id => document.getElementById(id);
 const FREE_LIMIT = 3;
@@ -1589,6 +1647,48 @@ function renderPrices(){
   $("pdfName").textContent = SALE.planPdf.name; $("pdfPrice").textContent = won(SALE.planPdf.price);
   $("priceFine").textContent = (SALE.cardLink ? "계좌이체와 카드로 결제할 수 있어요. " : "결제는 계좌이체로 받아요. ") + "결제가 확인되면 Pro 코드(또는 PDF)를 보내 드려요.";
 }
+
+/* ---------- 광고 배너 ---------- */
+let adIdx = 0, adTimer = null;
+function adHref(b){ return b.url || ("https://www.coupang.com/np/search?q=" + encodeURIComponent(b.search || b.title)); }
+function renderBanners(){
+  const list = BANNERS.filter(b => b && b.title);
+  if (!list.length){ $("ads").hidden = true; return; }
+  $("adTrack").innerHTML = list.map((b, i) => `
+    <div class="ad-slide${i === 0 ? " on" : ""}" style="--bg:${esc(b.bg || "#2f7d5b")}" role="group" aria-label="${i + 1} / ${list.length}">
+      <span class="ad-label">${b.action === "contact" ? "광고 자리" : "광고"}</span>
+      <div class="ad-icon" aria-hidden="true">${b.icon || "✨"}</div>
+      <div class="ad-text"><span class="ad-tag">${esc(b.tag || "")}</span><h3>${esc(b.title)}</h3><p>${esc(b.sub || "")}</p></div>
+      ${b.action === "contact"
+        ? `<button class="ad-btn" data-help="ask">${esc(b.button || "광고 문의하기")}</button>`
+        : `<a class="ad-btn" href="${esc(adHref(b))}" target="_blank" rel="noopener sponsored">${esc(b.button || "보러 가기")} →</a>`}
+    </div>`).join("");
+  $("adDots").innerHTML = list.map((_, i) => `<button data-i="${i}" class="${i === 0 ? "on" : ""}" aria-label="${i + 1}번째 광고"></button>`).join("");
+  const partner = list.some(b => b.url && /coupang/i.test(b.url));
+  $("adNotice").hidden = !partner; $("adNotice").textContent = COUPANG.notice;
+  adIdx = 0; startAds();
+}
+function showAd(i){
+  const slides = document.querySelectorAll(".ad-slide"), dots = document.querySelectorAll("#adDots button");
+  if (!slides.length) return;
+  adIdx = (i + slides.length) % slides.length;
+  slides.forEach((x, k) => x.classList.toggle("on", k === adIdx));
+  dots.forEach((x, k) => x.classList.toggle("on", k === adIdx));
+}
+function startAds(){
+  clearInterval(adTimer);
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  adTimer = setInterval(() => showAd(adIdx + 1), 5000);
+}
+$("adPrev").addEventListener("click", () => { showAd(adIdx - 1); startAds(); });
+$("adNext").addEventListener("click", () => { showAd(adIdx + 1); startAds(); });
+$("adDots").addEventListener("click", e => { const b = e.target.closest("button[data-i]"); if (b){ showAd(Number(b.dataset.i)); startAds(); } });
+$("ads").addEventListener("mouseenter", () => clearInterval(adTimer));
+$("ads").addEventListener("mouseleave", startAds);
+(() => { let x0 = null; const w = $("adTrack");
+  w.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; }, {passive:true});
+  w.addEventListener("touchend", e => { if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40){ showAd(adIdx + (dx < 0 ? 1 : -1)); startAds(); } x0 = null; });
+})();
 
 /* ---------- 쿠팡 파트너스 추천 상품 ---------- */
 function renderShop(where){
@@ -2333,6 +2433,7 @@ function hide(id){ $(id).classList.remove("on"); }
 let tt; function toast(m){ const t = $("toast"); t.textContent = m; t.classList.add("on"); clearTimeout(tt); tt = setTimeout(() => t.classList.remove("on"), 1900); }
 function refreshAll(){
   renderPrices(); renderShops();
+  if (!$("adTrack").children.length) renderBanners();
   renderBadge(); renderUsage(); renderLog();
   if ($("v-diet").classList.contains("on")) renderDiet();
   if ($("v-report").classList.contains("on")) renderReport();
